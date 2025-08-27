@@ -108,7 +108,7 @@ router.get("/blog/:slug", async (req, res) => {
     const contentHTML = marked(post.content);
 
 
-    res.render("blogdetail", { 
+    res.render("blogDetail", { 
       post, 
       contentHTML,  // <-- pass converted HTML content
       relatedPosts,   // <-- pass related posts
