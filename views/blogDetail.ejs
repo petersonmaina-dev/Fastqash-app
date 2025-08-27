@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= post.title %> - Fastqash Blog</title>
+  <meta name="description" content="<%= post.excerpt %>">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+        --primary: #2c3e50;
+        --secondary: #e74c3c;
+        --accent: #3498db;
+        --light: #ecf0f1;
+        --dark: #2c3e50;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+        padding-top: 80px;
+        background-color: #fdfdfd;
+    }
+
+    h1,h2,h3,h4,h5,h6 { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+
+    /* Navbar */
+    .navbar {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background-color: white;
+        padding: 15px 0;
+    }
+    .navbar-brand { font-weight: 700; color: var(--primary); font-size: 1.8rem; }
+    .navbar-brand span { color: var(--secondary); }
+    .nav-link { font-weight: 500; margin: 0 10px; transition: all 0.3s; }
+    .nav-link:hover { color: var(--secondary); }
+
+    /* Buttons */
+    .btn-primary {
+        background-color: var(--secondary);
+        border-color: var(--secondary);
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    .btn-primary:hover {
+        background-color: #c0392b;
+        border-color: #c0392b;
+        transform: translateY(-2px);
+    }
+    .btn-outline-primary { font-size: 0.875rem; }
+
+    /* Hero */
+    .blog-hero {
+    background: linear-gradient(rgba(44,62,80,0.8), rgba(44,62,80,0.8)), url('<%= post.image || "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" %>');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+.blog-hero .badge {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+}
+.blog-hero h1 {
+    font-size: 2.5rem;
+}
+.blog-hero p.lead {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+
+    .section-title {
+        position: relative;
+        margin-bottom: 40px;
+        padding-bottom: 15px;
+    }
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: var(--secondary);
+    }
+
+    /* Post Content */
+    .post-content { font-size: 1.05rem; line-height: 1.75; color: #333; margin-bottom: 50px; }
+    .post-image { max-height: 450px; object-fit: cover; border-radius: 8px; margin-bottom: 30px; width: 100%; }
+
+    /* Related Posts */
+    .related-posts .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s, box-shadow 0.3s;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    .related-posts .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .card-img-top { height: 200px; object-fit: cover; transition: transform 0.5s; }
+    .card:hover .card-img-top { transform: scale(1.05); }
+    .card-title { font-size: 1rem; font-weight: 600; }
+
+    /* Footer */
+    footer { background-color: var(--dark); color: white; padding: 60px 0 30px; }
+    footer a { color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s; }
+    footer a:hover { color: white; }
+    .social-icon { display: inline-block; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 40px; margin-right: 10px; transition: all 0.3s; }
+    .social-icon:hover { background: var(--secondary); transform: translateY(-3px); }
+
+    /* WhatsApp Float */
+    .whatsapp-float { position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px; background-color: #25d366; color: white; border-radius: 50px; text-align: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 100; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+    .whatsapp-float:hover { background-color: #128c7e; transform: scale(1.05); }
+
+    @media (max-width: 768px) {
+        .blog-hero { padding: 60px 0; }
+        .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 20px; font-size: 24px; }
+        .card-img-top { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <%- include('partials/navbar') %>
+
+  <!-- Hero -->
+<section class="blog-hero">
+  <div class="container text-center">
+    <% if (post.category) { %>
+      <span class="badge bg-primary mb-3"><%= post.category %></span>
+    <% } %>
+    <h1 class="fw-bold mb-3"><%= post.title %></h1>
+    <p class="lead text-light mb-0"><%= post.date.toDateString() %></p>
+  </div>
+</section>
+
+  <!-- Post Content -->
+  <section class="py-5">
+    <div class="container">
+      <% if (post.image) { %>
+        <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
+      <% } %>
+      <div class="post-content">
+        <%- contentHTML %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Posts -->
+  <section class="py-5 related-posts">
+    <div class="container">
+      <h2 class="section-title">Related Posts</h2>
+      <div class="row">
+        <% if (relatedPosts && relatedPosts.length > 0) { %>
+          <% relatedPosts.forEach(rp => { %>
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <% if (rp.image) { %>
+                  <img src="<%= rp.image %>" class="card-img-top" alt="<%= rp.title %>">
+                <% } %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= rp.title %></h5>
+                  <a href="/blog/<%= rp.slug %>" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-12 text-center py-5">
+            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+            <h3>No related posts found</h3>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/254742381320?text=Hi.%20I%20would%20like%20to%20join%20FastQash." target="_blank" class="whatsapp-float">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

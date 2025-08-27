@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fastqash Agencies - Online Earnings Platform</title>
+  <meta name="description" content="Join Fastqash Agencies - a leading online earning platform offering fast money making opportunities in Ghana, Kenya, Zambia and around the world. Start your journey to financial freedom today.">
+  <meta name="keywords" content="Fastqash, MLM, network marketing, business opportunity, Ghana, Kenya, Zambia, make money online">
+
+
+  <!-- Open Graph Tags -->
+    <meta property="og:title" content="Fastqash Agencies - Online Earnings Platform">
+    <meta property="og:description" content="Join Fastqash Agencies - a leading digital platform offering earning opportunities in multiple countries.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fasqash.net">
+    <meta property="og:image" content="https://fasqash.net/images/og-image.jpg">
+    
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: white;
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .navbar-brand span {
+            color: var(--secondary);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            border-radius: 10px;
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        
+        .testimonial-card {
+            background-color: var(--light);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .gallery-img {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .gallery-img img {
+            transition: all 0.5s;
+        }
+        
+        .gallery-img:hover img {
+            transform: scale(1.05);
+        }
+        
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        footer a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-float:hover {
+            background-color: #128c7e;
+            transform: scale(1.05);
+        }
+        
+        .country-card {
+            background: linear-gradient(to bottom, var(--light), white);
+            padding: 30px;
+            border-radius: 10px;
+            height: 100%;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Spinner */
+         #loader {
+    display: none;
+    text-align: center;
+    padding: 20px;
+  }
+  #loader div {
+    width: 30px;
+    height: 30px;
+    border: 4px solid #ccc;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 24px;
+            }
+            
+            .card-img-top {
+                height: 160px;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+  <!-- Navbar -->
+      <%- include('partials/navbar') %>
+
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <h1 class="display-4 fw-bold mb-4">Unlock Your Financial Freedom with Fastqash</h1>
+          <p class="lead mb-4">Join thousands of successful members across Africa...</p>
+          <a href="https://fastqash.com/register.php/ref?=Elzado" class="btn btn-primary btn-lg">Get Started Today</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Legitimacy Section -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Why Choose Fastqash?</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4 fade-in">
+          <div class="card h-100 text-center p-4">
+            <div class="card-body">
+              <div class="mb-4">
+                <i class="fas fa-shield-alt fa-3x text-primary"></i>
+              </div>
+              <h4>Licensed & Regulated</h4>
+              <p>Fully compliant with financial regulations in all operating countries.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4 fade-in">
+          <div class="card h-100 text-center p-4">
+            <div class="card-body">
+              <div class="mb-4">
+                <i class="fas fa-chart-line fa-3x text-primary"></i>
+              </div>
+              <h4>Proven Business Model</h4>
+              <p>Join a system with a track record of success and satisfied members.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4 fade-in">
+          <div class="card h-100 text-center p-4">
+            <div class="card-body">
+              <div class="mb-4">
+                <i class="fas fa-users fa-3x text-primary"></i>
+              </div>
+              <h4>Strong Community</h4>
+              <p>Access training and support from our network of successful members.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- 🔹 Posts Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="section-title">Latest News</h2>
+
+    <!-- ✅ Spinner (hidden by default) -->
+    <div id="spinner" class="text-center my-5" style="display: none;">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- ✅ Posts container -->
+    <div id="posts-container" class="row">
+      <% if (latestPosts && latestPosts.length > 0) { %>
+        <% latestPosts.forEach(post => { %>
+          <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 shadow-sm">
+              <% if (post.image) { %>
+                <img src="<%= post.image %>" class="card-img-top" alt="<%= post.title %>">
+              <% } %>
+              <div class="card-body">
+                <% if (post.category) { %>
+                  <span class="badge bg-primary mb-2"><%= post.category %></span>
+                <% } %>
+                <h5 class="card-title"><%= post.title %></h5>
+                <p class="card-text">
+                  <%= post.excerpt 
+                        ? post.excerpt.substring(0, 100) + '...' 
+                        : (post.content ? post.content.substring(0, 100) + '...' : '') %>
+                <% if (post.date) { %>
+  <p class="date">
+    <small>
+      <%= new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) %>
+    </small>
+  </p>
+<% } %>
+
+                <a href="/blog/<%= post.slug %>" class="btn btn-outline-primary">Read More</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12">
+          <p class="text-center text-muted">No posts available yet.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- ✅ Pagination container -->
+    <div id="pagination-controls">
+      <% if (pages > 1) { %>
+        <div class="pagination mt-4 text-center">
+          <ul class="pagination justify-content-center">
+            <% if (current > 1) { %>
+              <li class="page-item">
+                <a class="page-link" href="/?page=<%= current - 1 %>">Previous</a>
+              </li>
+            <% } %>
+            <% for (let i = 1; i <= pages; i++) { %>
+              <li class="page-item <%= current === i ? 'active' : '' %>">
+                <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
+              </li>
+            <% } %>
+            <% if (current < pages) { %>
+              <li class="page-item">
+                <a class="page-link" href="/?page=<%= current + 1 %>">Next</a>
+              </li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Fade-in animation CSS -->
+<style>
+  .fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- ✅ AJAX Pagination Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const postsContainer = document.getElementById("posts-container");
+    const paginationControls = document.getElementById("pagination-controls");
+    const spinner = document.getElementById("spinner");
+
+    paginationControls.addEventListener("click", async function (e) {
+      if (e.target.tagName === "A") {
+        e.preventDefault();
+        const url = e.target.getAttribute("href");
+
+        try {
+          // Show spinner, hide posts
+          spinner.style.display = "block";
+          postsContainer.style.display = "none";
+
+          const res = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+          const data = await res.json();
+
+          // Replace posts
+          postsContainer.innerHTML = data.postsHtml;
+
+          // Replace pagination
+          paginationControls.innerHTML = data.paginationHtml;
+
+          // Hide spinner, show posts
+          spinner.style.display = "none";
+          postsContainer.style.display = "flex";
+
+          // ✅ Smooth scroll back to top of posts
+          postsContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        } catch (err) {
+          console.error("Error loading page:", err);
+          spinner.style.display = "none";
+          postsContainer.style.display = "flex";
+        }
+      }
+    });
+  });
+</script>
+
+
+
+
+
+  <!-- Quick Links Section -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center">Explore Fastqash</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4 fade-in">
+          <div class="card h-100">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-award fa-2x mb-3 text-primary"></i>
+              <h4>Legitimacy</h4>
+              <p>Learn about our certifications and regulatory compliance.</p>
+              <a href="legitimacy" class="btn btn-outline-primary mt-3">Learn More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4 fade-in">
+          <div class="card h-100">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-user-plus fa-2x mb-3 text-primary"></i>
+              <h4>How to Register</h4>
+              <p>Step-by-step guide to joining the Fastqash family.</p>
+              <a href="register" class="btn btn-outline-primary mt-3">Get Started</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4 fade-in">
+          <div class="card h-100">
+            <div class="card-body text-center p-4">
+              <i class="fas fa-globe-africa fa-2x mb-3 text-primary"></i>
+              <h4>Global Operations</h4>
+              <p>See how Fastqash works in different countries.</p>
+              <a href="how-it-works" class="btn btn-outline-primary mt-3">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <h2 class="section-title text-center">Success Stories</h2>
+      <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 mb-4 fade-in">
+          <div class="testimonial-card">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Testimonial" class="rounded-circle me-3" width="60" height="60">
+              <div>
+                <h5 class="mb-0">Sarah M.</h5>
+                <p class="text-muted mb-0">Nairobi, Kenya</p>
+              </div>
+            </div>
+            <p class="mb-0">"Fastqash changed my life. Within 2 months, I was making enough to quit my day job and focus on growing my network full-time. The support system is incredible!"</p>
+          </div>
+        </div>
+        <div class="col-lg-6 mb-4 fade-in">
+          <div class="testimonial-card">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Testimonial" class="rounded-circle me-3" width="60" height="60">
+              <div>
+                <h5 class="mb-0">Kwame A.</h5>
+                <p class="text-muted mb-0">Accra, Ghana</p>
+              </div>
+            </div>
+            <p class="mb-0">"I was skeptical at first, but the training and mentorship I received helped me build a sustainable income stream. Now I'm helping others achieve financial freedom."</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="https://fastqash.com/register.php/ref?=Elzado" class="btn btn-primary btn-lg">Join Fastqash Today</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-float">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Intersection Observer & Back to Top logic
+    document.addEventListener("DOMContentLoaded", () => {
+      const faders = document.querySelectorAll('.fade-in');
+      const appearOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+      faders.forEach(fader => appearOnScroll.observe(fader));
+
+      
+      
+    });
+  </script>
+
+
+
+</body>
+</html>

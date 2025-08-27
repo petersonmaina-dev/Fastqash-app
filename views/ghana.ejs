@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fastqash Ghana - MLM Business Platform for Ghanaians</title>
+    <meta name="description" content="Join Fastqash Ghana - a leading MLM platform offering legitimate business opportunities for Ghanaians. Start your journey to financial freedom with mobile money payments and local support.">
+    <meta name="keywords" content="Fastqash Ghana, MLM business Ghana, network marketing Ghana, business opportunity Ghana, make money online Ghana, mobile money Ghana">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Fastqash Ghana - MLM Business Platform for Ghanaians">
+    <meta property="og:description" content="Join Fastqash Ghana - a leading MLM platform offering legitimate business opportunities with mobile money payments and local support.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fasqash.net/ghana">
+    <meta property="og:image" content="https://fasqash.net/images/ghana-og-image.jpg">
+    
+    <!-- Bootstrap / Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+     <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --ghana-red: #CE1126;
+            --ghana-yellow: #FCD116;
+            --ghana-green: #006B3F;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            padding-top: 80px;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: white;
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .navbar-brand span {
+            color: var(--secondary);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+        
+        .btn-primary {
+            background-color: var(--ghana-red);
+            border-color: var(--ghana-red);
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #a50d1e;
+            border-color: #a50d1e;
+            transform: translateY(-2px);
+        }
+        
+        .ghana-hero {
+            background: linear-gradient(rgba(0, 107, 63, 0.7), rgba(0, 107, 63, 0.7)), url('https://images.unsplash.com/photo-1575877091466-beff298274c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            border-radius: 10px;
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--ghana-red);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-card {
+            background-color: var(--light);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .ghana-flag-theme {
+            border-left: 4px solid var(--ghana-red);
+        }
+        
+        .ghana-flag-theme:nth-child(2) {
+            border-left: 4px solid var(--ghana-yellow);
+        }
+        
+        .ghana-flag-theme:nth-child(3) {
+            border-left: 4px solid var(--ghana-green);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        footer a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: var(--ghana-red);
+            transform: translateY(-3px);
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-float:hover {
+            background-color: #128c7e;
+            transform: scale(1.05);
+        }
+        
+        .country-card {
+            background: linear-gradient(to bottom, var(--light), white);
+            padding: 30px;
+            border-radius: 10px;
+            height: 100%;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--ghana-red);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .ghana-pattern {
+            background-image: 
+                linear-gradient(45deg, var(--ghana-red) 25%, transparent 25%), 
+                linear-gradient(-45deg, var(--ghana-red) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--ghana-red) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--ghana-red) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.05;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            pointer-events: none;
+        }
+        
+        .pattern-container {
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .ghana-hero {
+                padding: 60px 0;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+    
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Ghana page content -->
+        <div id="country-content" class="page-content">
+            <div class="ghana-hero mb-5 pattern-container">
+                <div class="ghana-pattern"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto text-center">
+                            <h1 class="display-4 fw-bold">Fastqash Ghana</h1>
+                            <p class="lead">Meda w'asɛm! Building financial freedom for Ghanaian entrepreneurs</p>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Flag_of_Ghana.svg" alt="Ghana Flag" style="height: 60px; margin-top: 20px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h2 class="section-title">Fastqash Operations in Ghana</h2>
+                    <p>Fastqash has been empowering Ghanaian entrepreneurs since 2024, helping thousands of members achieve financial independence through our proven business model. We understand the unique economic landscape of Ghana and have tailored our services to meet the needs of ambitious Ghanaians.</p>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4 fade-in">
+                    <div class="card h-100 ghana-flag-theme">
+                        <div class="card-body p-4">
+                            <h3><i class="fas fa-file-contract me-2" style="color: var(--ghana-red);"></i> Regulatory Compliance in Ghana</h3>
+                            <p>Fastqash Ghana is fully registered and compliant with all Ghanaian regulations:</p>
+                            <ul>
+                                <li>Registered with the Registrar General's Department under registration number CG19050689</li>
+                                <li>Regular financial audits by KPMG </li>
+                                <li>Data protection compliance with the Data Protection Commission of Ghana</li>
+                                <li>Transparent operations and member communications in both English and Twi</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4 fade-in">
+                    <div class="card h-100 ghana-flag-theme">
+                        <div class="card-body p-4">
+                            <h3><i class="fas fa-gift me-2" style="color: var(--ghana-yellow);"></i> Benefits for Ghanaian Members</h3>
+                            <p>Ghanaian members enjoy these exclusive benefits:</p>
+                            <ul>
+                                <li>Mobile Money (MoMo) integration for easy deposits and withdrawals</li>
+                                <li>Training materials available in English, Twi, Ga, and Ewe</li>
+                                <li>Regular physical training sessions across all 16 regions</li>
+                                <li>Ghana-specific marketing materials and strategies</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h2 class="section-title">Payment Methods for Ghanaians</h2>
+                    <p>We've made it easy for Ghanaians to join and receive payments through local payment systems:</p>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-4">
+                                <i class="fas fa-mobile-alt fa-3x" style="color: var(--ghana-yellow);"></i>
+                            </div>
+                            <h4>Mobile Money</h4>
+                            <p>Send and receive payments via MTN MoMo, Vodafone Cash, and AirtelTigo Money</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-4">
+                                <i class="fas fa-university fa-3x" style="color: var(--ghana-green);"></i>
+                            </div>
+                            <h4>Bank Transfer</h4>
+                            <p>Direct transfers to all major Ghanaian banks including GCB, Ecobank, and Barclays</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-4">
+                                <i class="fas fa-money-bill-wave fa-3x" style="color: var(--ghana-red);"></i>
+                            </div>
+                            <h4>Cash Pickup</h4>
+                            <p>Withdraw your earnings at designated pickup locations across Ghana</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h2 class="section-title">Success Stories from Ghana</h2>
+                    <p>Hear from fellow Ghanaians who have transformed their lives with Fastqash:</p>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="testimonial-card h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1589156280159-27698a70f29e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Testimonial" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Kwame Mensah</h5>
+                                <p class="text-muted mb-0">Kumasi, Ashanti Region</p>
+                            </div>
+                        </div>
+                        <p class="mb-0">"Fastqash has changed my life! As a teacher, my salary was 
+                            never enough. Now I earn more from Fastqash than my teaching job.
+                              Meda w'asɛm, Fastqash!"</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="testimonial-card h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Testimonial" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Abena Sarpong</h5>
+                                <p class="text-muted mb-0">Accra, Greater Accra</p>
+                            </div>
+                        </div>
+                        <p class="mb-0">"After university, I struggled to find a job for 2 years. A friend introduced me to Fastqash, and within 6 months, I was making enough to support my entire family. The mobile money withdrawals make it so convenient!"</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="testimonial-card h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Testimonial" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Kofi Acheampong</h5>
+                                <p class="text-muted mb-0">Takoradi, Western Region</p>
+                            </div>
+                        </div>
+                        <p class="mb-0">"As a fisherman, business was unpredictable. With Fastqash, I now have a steady income that doesn't depend on the weather or fishing seasons. I've bought two new fishing boats and expanded my business!"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-lg-12 text-center pattern-container">
+                    <div class="ghana-pattern"></div>
+                    <div class="card bg-light border-0">
+                        <div class="card-body p-5">
+                            <h2 class="mb-4">Ready to Join Fastqash Ghana?</h2>
+                            <p class="lead mb-4">Start your journey to financial freedom today with support tailored for Ghanaians</p>
+                            <a href="https://fastqash.com/register.php/ref?=Elzado" class="btn btn-primary btn-lg">Register Now</a>
+                            <p class="mt-3">Or text "FASTQASH" to +254 742381320 for more information</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/254742381320?text=Hi.%20My%20name%20is%20.....,%20I%20would%20like%20to%20join%20FastQash.%20Please%20guide%20me." 
+       target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Page-Specific Animation Script -->
+    <script>
+        function animateElements() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                if (elementPosition < screenPosition) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('scroll', animateElements);
+            animateElements();
+        });
+    </script>
+</body>
+</html>
