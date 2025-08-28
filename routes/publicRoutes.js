@@ -66,30 +66,43 @@ router.get("/", async (req, res) => {
       return html;
     }
 
-    // Handle AJAX request
-    if (req.xhr || req.headers["x-requested-with"] === "XMLHttpRequest") {
-      const postsHtml = latestPosts
-        .map(post => `
-          <div class="col-md-4 mb-4 fade-in">
-            <div class="card h-100 shadow-sm">
-              ${post.image ? `<img src="${post.image}" class="card-img-top" alt="${post.title}">` : ""}
-              <div class="card-body">
-                ${post.category ? `<span class="badge bg-primary mb-2">${post.category}</span>` : ""}
-                <h5 class="card-title">${post.title}</h5>
-                <p class="card-text">
-                  ${post.excerpt ? post.excerpt.substring(0, 100) + "..." : (post.content ? post.content.substring(0, 100) + "..." : "")}
-                </p>
-                ${post.date ? `<p class="date"><small>${new Date(post.date).toLocaleDateString()}</small></p>` : ""}
-                <a href="/blog/${post.slug}" class="btn btn-outline-primary">Read More</a>
+          // Handle AJAX request
+      if (req.xhr || req.headers["x-requested-with"] === "XMLHttpRequest") {
+        const postsHtml = latestPosts
+          .map(post => `
+            <div class="col-md-4 mb-4 fade-in">
+              <div class="card h-100 shadow-sm">
+                ${post.image ? `<img src="${post.image}" class="card-img-top" alt="${post.title}">` : ""}
+                <div class="card-body">
+                  ${post.category ? `<span class="badge bg-primary mb-2">${post.category}</span>` : ""}
+                  <h5 class="card-title">${post.title}</h5>
+                  <p class="card-text">
+                    ${post.excerpt
+                      ? post.excerpt.substring(0, 100) + "..."
+                      : (post.content ? post.content.substring(0, 100) + "..." : "")
+                    }
+                  </p>
+                  ${
+                    post.date
+                      ? `<p class="date"><small>${new Date(post.date).toLocaleDateString('en-US', {
+                          weekday: 'short',
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}</small></p>`
+                      : ""
+                  }
+                  <a href="/blog/${post.slug}" class="btn btn-outline-primary">Read More</a>
+                </div>
               </div>
             </div>
-          </div>
-        `).join("");
+          `).join("");
 
-      const paginationHtml = getPaginationHtml(page, totalPages);
+        const paginationHtml = getPaginationHtml(page, totalPages);
 
-      return res.json({ postsHtml, paginationHtml });
-    }
+        return res.json({ postsHtml, paginationHtml });
+      }
+
 
     // Normal render
     res.render("home", {
