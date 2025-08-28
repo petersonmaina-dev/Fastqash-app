@@ -120,8 +120,6 @@ router.get("/", async (req, res) => {
 });
 
 
-
-
 // Blog list → all posts
 router.get("/blog", async (req, res) => {
   try {
@@ -132,6 +130,31 @@ router.get("/blog", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// Blog search API (AJAX live search)
+router.get("/blog/search", async (req, res) => {
+  try {
+    const searchQuery = req.query.q ? req.query.q.trim() : '';
+    let query = {};
+
+    if (searchQuery) {
+      query = {
+        $or: [
+          { title: { $regex: searchQuery, $options: "i" } },
+          { excerpt: { $regex: searchQuery, $options: "i" } },
+          { category: { $regex: searchQuery, $options: "i" } }
+        ]
+      };
+    }
+
+    const posts = await Blog.find(query).sort({ date: -1 });
+    res.json(posts); // Return JSON for AJAX
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
 
 // Blog detail → by slug
 router.get("/blog/:slug", async (req, res) => {

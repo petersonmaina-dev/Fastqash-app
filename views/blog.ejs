@@ -225,14 +225,22 @@
   </section>
 
   <!-- Blog Posts -->
-  <section class="py-5">
-    <div class="container">
-      <h2 class="section-title">Latest Posts</h2>
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title">Latest Posts</h2>
 
-      <div class="row">
+          <!-- Search Bar -->
+      <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+          <input id="search-input" class="form-control" type="search" placeholder="Search posts...">
+        </div>
+      </div>
+
+      <!-- Posts Container -->
+      <div id="posts-container" class="row">
         <% if (posts && posts.length > 0) { %>
           <% posts.forEach(post => { %>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 post-item">
               <div class="card h-100">
                 <img src="<%= post.image %>" class="card-img-top" alt="<%= post.title %>">
                 <div class="card-body">
@@ -248,15 +256,68 @@
             </div>
           <% }) %>
         <% } else { %>
-          <div class="col-12 text-center py-5">
+          <div class="col-12 text-center py-5 no-results">
             <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
             <h3>No posts found</h3>
-            <p class="text-muted">There are no posts yet. Please check back later.</p>
+            <p class="text-muted">Try searching with different keywords.</p>
           </div>
         <% } %>
       </div>
-    </div>
-  </section>
+
+  </div>
+</section>
+
+<!-- Search Script -->
+<script>
+  const searchInput = document.getElementById('search-input');
+  const postsContainer = document.getElementById('posts-container');
+
+  searchInput.addEventListener('input', async () => {
+    const query = searchInput.value.trim();
+
+    try {
+      const res = await fetch(`/blog/search?q=${encodeURIComponent(query)}`);
+      const posts = await res.json();
+
+      if (posts.length === 0) {
+        postsContainer.innerHTML = `
+          <div class="col-12 text-center py-5 no-results">
+            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+            <h3>No posts found</h3>
+            <p class="text-muted">Try searching with different keywords.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      posts.forEach(post => {
+        html += `
+          <div class="col-md-4 mb-4 post-item">
+            <div class="card h-100">
+              <img src="${post.image}" class="card-img-top" alt="${post.title}">
+              <div class="card-body">
+                <span class="badge bg-primary mb-2">${post.category}</span>
+                <h5 class="card-title">${post.title}</h5>
+                <p class="card-text">${post.excerpt}</p>
+                <p class="text-muted"><small>${new Date(post.date).toDateString()}</small></p>
+              </div>
+              <div class="card-footer bg-transparent">
+                <a href="/blog/${post.slug}" class="btn btn-sm btn-outline-primary">Read More</a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      postsContainer.innerHTML = html;
+
+    } catch (err) {
+      console.error(err);
+    }
+  });
+</script>
+
 
   <!-- Footer -->
   <%- include('partials/footer') %>
