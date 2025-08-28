@@ -45,6 +45,10 @@ app.set("views", path.join(__dirname, "views"));
 // Express EJS Layouts
 app.use(expressLayouts);
 
+
+// Default: no layout unless you specify
+app.set("layout", false);
+
 // ===== Routes =====
 const adminRoutes = require("./routes/adminRoutes");
 const publicRoutes = require("./routes/publicRoutes");
