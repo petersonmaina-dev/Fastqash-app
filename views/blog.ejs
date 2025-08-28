@@ -5,7 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog - Fastqash Agencies</title>
   <meta name="description" content="Read the latest news, tips, and updates from Fastqash Agencies">
+  <meta name="keywords" content="Fastqash, Blog, News, Updates, Financial Freedom, Community, Success Stories">
+  <meta name="author" content="Fastqash Agencies">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Blog - Fastqash Agencies">
+  <meta property="og:description" content="Read the latest news, tips, and updates from Fastqash Agencies">
+  <meta property="og:image" content="https://fastqash.net/images/og-image.png">
+  <meta property="og:url" content="https://fastqash.net/blog">
+  <meta property="og:type" content="website">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blog - Fastqash Agencies">
+  <meta name="twitter:description" content="Read the latest news, tips, and updates from Fastqash Agencies">
+  <meta name="twitter:image" content="https://fastqash.net/images/og-image.jpg">
 
+
+  <!-- favicon-->
+  <link rel="icon" href="/images/favicon.PNG" type="image/x-icon">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -266,13 +282,21 @@
 
   </div>
 </section>
-
-<!-- Search Script -->
+<!-- Search Script with Debounce -->
 <script>
   const searchInput = document.getElementById('search-input');
   const postsContainer = document.getElementById('posts-container');
 
-  searchInput.addEventListener('input', async () => {
+  // Debounce function
+  function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+  }
+
+  async function fetchPosts() {
     const query = searchInput.value.trim();
 
     try {
@@ -315,8 +339,12 @@
     } catch (err) {
       console.error(err);
     }
-  });
+  }
+
+  // Apply debounce (300ms delay)
+  searchInput.addEventListener('input', debounce(fetchPosts, 300));
 </script>
+
 
 
   <!-- Footer -->
