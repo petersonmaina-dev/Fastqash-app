@@ -2,27 +2,74 @@ const express = require("express");
 const router = express.Router();
 const Blog = require("../models/blog");
 const { marked } = require('marked');
+  
 
-// Homepage → latest posts with pagination
+// Homepage → latest posts with sliding window pagination
 router.get("/", async (req, res) => {
   try {
     const perPage = 3; // posts per page
     const page = parseInt(req.query.page) || 1;
 
     const totalPosts = await Blog.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
 
     const latestPosts = await Blog.find()
       .sort({ date: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);
 
-    const totalPages = Math.ceil(totalPosts / perPage);
+    // Helper function to generate pagination HTML
+    function getPaginationHtml(current, total) {
+      const middleWindow = 3; // number of middle pages
+      let startPage = Math.max(2, current - 1);
+      let endPage = Math.min(total - 1, current + 1);
 
-    // Handle AJAX pagination
+      // Adjust if near start
+      if (current === 1) {
+        startPage = 2;
+        endPage = 2 + middleWindow - 1;
+      }
+      // Adjust if near end
+      if (current === total) {
+        startPage = total - middleWindow;
+        endPage = total - 1;
+      }
+      startPage = Math.max(2, startPage);
+      endPage = Math.min(total - 1, endPage);
+
+      let html = `<div class="pagination mt-4 text-center"><ul class="pagination justify-content-center">`;
+
+      // Previous
+      if (current > 1) html += `<li class="page-item"><a class="page-link" href="/?page=${current - 1}">&lt;</a></li>`;
+
+      // First page
+      html += `<li class="page-item ${current === 1 ? "active" : ""}"><a class="page-link" href="/?page=1">1</a></li>`;
+
+      // Ellipsis before window
+      if (startPage > 2) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+
+      // Middle pages
+      for (let i = startPage; i <= endPage; i++) {
+        html += `<li class="page-item ${current === i ? "active" : ""}"><a class="page-link" href="/?page=${i}">${i}</a></li>`;
+      }
+
+      // Ellipsis after window
+      if (endPage < total - 1) html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+
+      // Last page
+      if (total > 1) html += `<li class="page-item ${current === total ? "active" : ""}"><a class="page-link" href="/?page=${total}">${total}</a></li>`;
+
+      // Next
+      if (current < total) html += `<li class="page-item"><a class="page-link" href="/?page=${current + 1}">&gt;</a></li>`;
+
+      html += `</ul></div>`;
+      return html;
+    }
+
+    // Handle AJAX request
     if (req.xhr || req.headers["x-requested-with"] === "XMLHttpRequest") {
       const postsHtml = latestPosts
-        .map(
-          (post) => `
+        .map(post => `
           <div class="col-md-4 mb-4 fade-in">
             <div class="card h-100 shadow-sm">
               ${post.image ? `<img src="${post.image}" class="card-img-top" alt="${post.title}">` : ""}
@@ -30,42 +77,21 @@ router.get("/", async (req, res) => {
                 ${post.category ? `<span class="badge bg-primary mb-2">${post.category}</span>` : ""}
                 <h5 class="card-title">${post.title}</h5>
                 <p class="card-text">
-                  ${post.excerpt
-                    ? post.excerpt.substring(0, 100) + "..."
-                    : (post.content ? post.content.substring(0, 100) + "..." : "")
-                  }
+                  ${post.excerpt ? post.excerpt.substring(0, 100) + "..." : (post.content ? post.content.substring(0, 100) + "..." : "")}
                 </p>
                 ${post.date ? `<p class="date"><small>${new Date(post.date).toLocaleDateString()}</small></p>` : ""}
                 <a href="/blog/${post.slug}" class="btn btn-outline-primary">Read More</a>
               </div>
             </div>
           </div>
-        `
-        )
-        .join("");
+        `).join("");
 
-      let paginationHtml = "";
-      if (totalPages > 1) {
-        paginationHtml += `<div class="pagination mt-4 text-center"><ul class="pagination justify-content-center">`;
-
-        if (page > 1) {
-          paginationHtml += `<li class="page-item"><a class="page-link" href="/?page=${page - 1}">Previous</a></li>`;
-        }
-
-        for (let i = 1; i <= totalPages; i++) {
-          paginationHtml += `<li class="page-item ${page === i ? "active" : ""}"><a class="page-link" href="/?page=${i}">${i}</a></li>`;
-        }
-
-        if (page < totalPages) {
-          paginationHtml += `<li class="page-item"><a class="page-link" href="/?page=${page + 1}">Next</a></li>`;
-        }
-
-        paginationHtml += `</ul></div>`;
-      }
+      const paginationHtml = getPaginationHtml(page, totalPages);
 
       return res.json({ postsHtml, paginationHtml });
     }
 
+    // Normal render
     res.render("home", {
       latestPosts,
       current: page,
@@ -73,11 +99,13 @@ router.get("/", async (req, res) => {
       layout: false,
       title: "Home",
     });
+
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
+
 
 
 

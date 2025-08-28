@@ -398,88 +398,156 @@
       <% if (pages > 1) { %>
         <div class="pagination mt-4 text-center">
           <ul class="pagination justify-content-center">
+
+            <!-- Previous button -->
             <% if (current > 1) { %>
               <li class="page-item">
-                <a class="page-link" href="/?page=<%= current - 1 %>">Previous</a>
+                <a class="page-link" href="/?page=<%= current - 1 %>">&lt;</a>
               </li>
             <% } %>
-            <% for (let i = 1; i <= pages; i++) { %>
+
+            <!-- Sliding window of pages -->
+            <% 
+              const maxWindow = 5; // number of pages to show in middle
+              let startPage = Math.max(2, current - Math.floor(maxWindow / 2));
+              let endPage = Math.min(pages - 1, current + Math.floor(maxWindow / 2));
+
+              // Adjust if near start
+              if (current <= Math.floor(maxWindow / 2)) {
+                startPage = 2;
+                endPage = Math.min(maxWindow + 1, pages - 1);
+              }
+              // Adjust if near end
+              if (current > pages - Math.floor(maxWindow / 2)) {
+                startPage = Math.max(pages - maxWindow, 2);
+                endPage = pages - 1;
+              }
+            %>
+
+            <!-- First page -->
+            <li class="page-item <%= current === 1 ? 'active' : '' %>">
+              <a class="page-link" href="/?page=1">1</a>
+            </li>
+
+            <!-- Ellipsis before window -->
+            <% if (startPage > 2) { %>
+              <li class="page-item disabled"><span class="page-link">...</span></li>
+            <% } %>
+
+            <!-- Middle pages -->
+            <% for (let i = startPage; i <= endPage; i++) { %>
               <li class="page-item <%= current === i ? 'active' : '' %>">
                 <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
               </li>
             <% } %>
-            <% if (current < pages) { %>
-              <li class="page-item">
-                <a class="page-link" href="/?page=<%= current + 1 %>">Next</a>
+
+            <!-- Ellipsis after window -->
+            <% if (endPage < pages - 1) { %>
+              <li class="page-item disabled"><span class="page-link">...</span></li>
+            <% } %>
+
+            <!-- Last page -->
+            <% if (pages > 1) { %>
+              <li class="page-item <%= current === pages ? 'active' : '' %>">
+                <a class="page-link" href="/?page=<%= pages %>"><%= pages %></a>
               </li>
             <% } %>
+
+            <!-- Next button -->
+            <% if (current < pages) { %>
+              <li class="page-item">
+                <a class="page-link" href="/?page=<%= current + 1 %>">&gt;</a>
+              </li>
+            <% } %>
+
           </ul>
         </div>
       <% } %>
     </div>
+
+
   </div>
 </section>
 
 <!-- ✅ Fade-in animation CSS -->
 <style>
-  .fade-in {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: fadeInUp 0.6s ease forwards;
-  }
+/* Fade-in animation for posts */
+.fade-in {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeInUp 0.6s ease forwards;
+}
 
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+/* Keyframes for smooth upward fade */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
   }
+  60% {
+    opacity: 0.6;
+    transform: translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
+
 
 <!-- ✅ AJAX Pagination Script -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const postsContainer = document.getElementById("posts-container");
-    const paginationControls = document.getElementById("pagination-controls");
-    const spinner = document.getElementById("spinner");
+document.addEventListener("DOMContentLoaded", function () {
+  const postsContainer = document.getElementById("posts-container");
+  const paginationControls = document.getElementById("pagination-controls");
+  const spinner = document.getElementById("spinner");
 
-    paginationControls.addEventListener("click", async function (e) {
-      if (e.target.tagName === "A") {
-        e.preventDefault();
-        const url = e.target.getAttribute("href");
+  paginationControls.addEventListener("click", async function (e) {
+    // Only handle clicks on <a> tags
+    if (e.target.tagName === "A") {
+      e.preventDefault();
+      const url = e.target.getAttribute("href");
 
-        try {
-          // Show spinner, hide posts
-          spinner.style.display = "block";
-          postsContainer.style.display = "none";
+      try {
+        // Show spinner, hide posts
+        spinner.style.display = "block";
+        postsContainer.style.display = "none";
 
-          const res = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
-          const data = await res.json();
+        // Fetch new page via AJAX
+        const res = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });
+        const data = await res.json();
 
-          // Replace posts
-          postsContainer.innerHTML = data.postsHtml;
+        // Replace posts and pagination
+        postsContainer.innerHTML = data.postsHtml;
+        paginationControls.innerHTML = data.paginationHtml;
 
-          // Replace pagination
-          paginationControls.innerHTML = data.paginationHtml;
+        // Apply fade-in animation to new posts
+        const newPosts = postsContainer.querySelectorAll(".fade-in");
+        newPosts.forEach((post, index) => {
+          post.style.opacity = 0;
+          post.style.transform = "translateY(10px)";
+          post.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.15}s`; // stagger slightly
+        });
 
-          // Hide spinner, show posts
-          spinner.style.display = "none";
-          postsContainer.style.display = "flex";
+        // Show posts and hide spinner
+        postsContainer.style.display = "flex";
 
-          // ✅ Smooth scroll back to top of posts
-          postsContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Smooth scroll back to top of posts
+        postsContainer.scrollIntoView({ behavior: "smooth", block: "start" });
 
-        } catch (err) {
-          console.error("Error loading page:", err);
-          spinner.style.display = "none";
-          postsContainer.style.display = "flex";
-        }
+        // Hide spinner
+        spinner.style.display = "none";
+
+      } catch (err) {
+        console.error("Error loading page:", err);
+        spinner.style.display = "none";
+        postsContainer.style.display = "flex";
       }
-    });
+    }
   });
+});
 </script>
-
-
 
 
 
