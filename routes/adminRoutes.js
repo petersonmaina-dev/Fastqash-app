@@ -62,16 +62,36 @@ router.get("/", ensureAuth, async (req, res) => {
 
 // ---------- Posts Management ----------
 
-// All Posts
+// All Posts (with optional search)
 router.get("/posts", ensureAuth, async (req, res) => {
   try {
-    const posts = await Blog.find().sort({ date: -1 });
-    res.render("admin/posts", { posts, title: "All Posts", active: "posts" });
+    const searchQuery = req.query.search ? req.query.search.trim() : '';
+    let query = {};
+
+    if (searchQuery) {
+      query = {
+        $or: [
+          { title: { $regex: searchQuery, $options: "i" } },
+          { category: { $regex: searchQuery, $options: "i" } },
+          { excerpt: { $regex: searchQuery, $options: "i" } }
+        ]
+      };
+    }
+
+    const posts = await Blog.find(query).sort({ date: -1 });
+
+    res.render("admin/posts", {
+      posts,
+      title: "All Posts",
+      active: "posts",
+      search: searchQuery
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching posts");
   }
 });
+
 
 // New Post Form
 router.get("/posts/new", ensureAuth, (req, res) => {
