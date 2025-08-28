@@ -19,14 +19,17 @@
   <meta name="twitter:description" content="Read the latest news, tips, and updates from Fastqash Agencies">
   <meta name="twitter:image" content="https://fastqash.net/images/og-image.jpg">
 
-
   <!-- favicon-->
   <link rel="icon" href="/images/favicon.PNG" type="image/x-icon">
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
@@ -263,123 +266,39 @@
   <%- include('partials/navbar') %>
 
   <!-- Blog Hero -->
-  <section class="blog-hero">
+  <section class="blog-hero text-center">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mx-auto text-center">
-          <h1 class="display-4 fw-bold mb-4">Fastqash Blog</h1>
-          <p class="lead">Stay updated with the latest news, tips, and success stories from the Fastqash community</p>
-        </div>
-      </div>
+      <h1 class="display-4 fw-bold mb-4">Fastqash Blog</h1>
+      <p class="lead">Stay updated with the latest news, tips, and success stories from the Fastqash community</p>
     </div>
   </section>
 
   <!-- Blog Posts -->
-<section class="py-5">
-  <div class="container">
-    <h2 class="section-title">Latest Posts</h2>
+  <section class="py-5">
+    <div class="container">
+      <h2 id="section-title"   class="section-title">Latest Posts</h2>
 
-          <!-- Search Bar -->
+      <!-- 🔍 Search Bar -->
       <div class="row mb-3">
         <div class="col-md-6 mx-auto">
           <input id="search-input" class="form-control" type="search" placeholder="Search posts...">
         </div>
       </div>
 
-      <!-- Posts Container -->
-      <div id="posts-container" class="row">
-        <% if (posts && posts.length > 0) { %>
-          <% posts.forEach(post => { %>
-            <div class="col-md-4 mb-4 post-item">
-              <div class="card h-100">
-                <img src="<%= post.image %>" class="card-img-top" alt="<%= post.title %>">
-                <div class="card-body">
-                  <span class="badge bg-primary mb-2"><%= post.category %></span>
-                  <h5 class="card-title"><%= post.title %></h5>
-                  <p class="card-text"><%= post.excerpt %></p>
-                  <p class="text-muted"><small><%= post.date.toDateString() %></small></p>
-                </div>
-                <div class="card-footer bg-transparent">
-                  <a href="/blog/<%= post.slug %>" class="btn btn-sm btn-outline-primary">Read More</a>
-                </div>
-              </div>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <div class="col-12 text-center py-5 no-results">
-            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-            <h3>No posts found</h3>
-            <p class="text-muted">Try searching with different keywords.</p>
-          </div>
-        <% } %>
+      <!-- ✅ Spinner -->
+      <div id="spinner" class="text-center my-5" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
 
-  </div>
-</section>
-<!-- Search Script with Debounce -->
-<script>
-  const searchInput = document.getElementById('search-input');
-  const postsContainer = document.getElementById('posts-container');
+      <!-- 📌 Posts Container -->
+      <div id="posts-container" class="row g-4"></div>
 
-  // Debounce function
-  function debounce(func, delay) {
-    let timeoutId;
-    return function(...args) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func.apply(this, args), delay);
-    };
-  }
-
-  async function fetchPosts() {
-    const query = searchInput.value.trim();
-
-    try {
-      const res = await fetch(`/blog/search?q=${encodeURIComponent(query)}`);
-      const posts = await res.json();
-
-      if (posts.length === 0) {
-        postsContainer.innerHTML = `
-          <div class="col-12 text-center py-5 no-results">
-            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-            <h3>No posts found</h3>
-            <p class="text-muted">Try searching with different keywords.</p>
-          </div>
-        `;
-        return;
-      }
-
-      let html = '';
-      posts.forEach(post => {
-        html += `
-          <div class="col-md-4 mb-4 post-item">
-            <div class="card h-100">
-              <img src="${post.image}" class="card-img-top" alt="${post.title}">
-              <div class="card-body">
-                <span class="badge bg-primary mb-2">${post.category}</span>
-                <h5 class="card-title">${post.title}</h5>
-                <p class="card-text">${post.excerpt}</p>
-                <p class="text-muted"><small>${new Date(post.date).toDateString()}</small></p>
-              </div>
-              <div class="card-footer bg-transparent">
-                <a href="/blog/${post.slug}" class="btn btn-sm btn-outline-primary">Read More</a>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-
-      postsContainer.innerHTML = html;
-
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  // Apply debounce (300ms delay)
-  searchInput.addEventListener('input', debounce(fetchPosts, 300));
-</script>
-
-
+      <!-- 📄 Pagination -->
+      <div id="pagination-container" class="pagination mt-4 text-center"></div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <%- include('partials/footer') %>
@@ -391,5 +310,87 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("search-input");
+    const postsContainer = document.getElementById("posts-container");
+    const paginationContainer = document.getElementById("pagination-container");
+    const spinner = document.getElementById("spinner");
+    const sectionTitle = document.getElementById("section-title");
+
+    let currentQuery = "";
+
+    // ✅ Debounce helper
+    function debounce(func, delay) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+      };
+    }
+
+    // ✅ Fetch posts
+    async function fetchPosts(page = 1, isPagination = false) {
+      try {
+        spinner.style.display = "block";
+        postsContainer.innerHTML = "";
+
+        // 👇 Scroll up immediately only when pagination
+        if (isPagination) {
+          sectionTitle.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        const res = await fetch(`/blog/search?q=${encodeURIComponent(currentQuery)}&page=${page}`);
+        const data = await res.json();
+
+        // ⏳ small delay (200ms) before hiding spinner
+        setTimeout(() => {
+          spinner.style.display = "none";
+
+          postsContainer.innerHTML = data.postsHtml
+            ? `<div class="row g-4 animate__animated animate__fadeIn">${data.postsHtml}</div>`
+            : `
+              <div class="col-12 text-center py-5 no-results animate__animated animate__fadeIn">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h3>No posts found</h3>
+                <p class="text-muted">Try searching with different keywords.</p>
+              </div>
+            `;
+
+          paginationContainer.innerHTML = data.paginationHtml || "";
+          attachPaginationEvents();
+        }, 200);
+
+      } catch (err) {
+        console.error(err);
+        spinner.style.display = "none";
+      }
+    }
+
+    // ✅ Attach pagination click events
+    function attachPaginationEvents() {
+      const links = paginationContainer.querySelectorAll("a[data-page]");
+      links.forEach(link => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const page = this.getAttribute("data-page");
+          fetchPosts(page, true); // 👈 flag = pagination
+        });
+      });
+    }
+
+    // ✅ Live search
+    searchInput.addEventListener("input", debounce((e) => {
+      currentQuery = e.target.value.trim();
+      fetchPosts(1, false); // 👈 flag = search
+    }, 300));
+
+   
+
+    // Initial load
+    fetchPosts(1, false);
+  });
+</script>
+
 </body>
 </html>

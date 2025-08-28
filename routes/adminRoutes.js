@@ -52,7 +52,8 @@ router.get("/", ensureAuth, async (req, res) => {
       stats: { totalPosts, totalCategories, totalImages },
       recentPosts,
       title: "Dashboard",
-      active: "dashboard"
+      active: "dashboard",
+      layout: "layouts/admin"
     });
   } catch (err) {
     console.error(err);
@@ -84,6 +85,7 @@ router.get("/posts", ensureAuth, async (req, res) => {
       posts,
       title: "All Posts",
       active: "posts",
+      layout: "layouts/admin",
       search: searchQuery
     });
   } catch (err) {
@@ -95,7 +97,7 @@ router.get("/posts", ensureAuth, async (req, res) => {
 
 // New Post Form
 router.get("/posts/new", ensureAuth, (req, res) => {
-  res.render("admin/new-post", { title: "Create New Post", active: "posts" });
+  res.render("admin/new-post", { title: "Create New Post", active: "posts", layout: "layouts/admin" });
 });
 
 // Save New Post (Cloudinary Base64)
@@ -138,7 +140,7 @@ router.get("/posts/edit/:id", ensureAuth, async (req, res) => {
     const post = await Blog.findById(req.params.id);
     if (!post) return res.status(404).send("Post not found");
 
-    res.render("admin/edit-post", { post, title: "Edit Post", active: "posts" });
+    res.render("admin/edit-post", { post, title: "Edit Post", active: "posts", layout: "layouts/admin" });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching post");

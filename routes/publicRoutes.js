@@ -120,23 +120,27 @@ router.get("/", async (req, res) => {
 });
 
 
-// Blog list → all posts
-router.get("/blog", async (req, res) => {
+// 📰 Blog page → just render template (AJAX will load posts)
+router.get("/blog", (req, res) => {
   try {
-    const posts = await Blog.find().sort({ date: -1 });
-    res.render("blog", { posts, layout: false, title: "Blog" });
+    res.render("blog", {
+      layout: false,
+      title: "Blog"
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
 
-// Blog search API (AJAX live search)
+// 🔍 Blog search + pagination API
 router.get("/blog/search", async (req, res) => {
   try {
-    const searchQuery = req.query.q ? req.query.q.trim() : '';
-    let query = {};
+    const searchQuery = req.query.q ? req.query.q.trim() : "";
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 9;
 
+    let query = {};
     if (searchQuery) {
       query = {
         $or: [
@@ -147,8 +151,83 @@ router.get("/blog/search", async (req, res) => {
       };
     }
 
-    const posts = await Blog.find(query).sort({ date: -1 });
-    res.json(posts); // Return JSON for AJAX
+    const totalPosts = await Blog.countDocuments(query);
+    const posts = await Blog.find(query)
+      .sort({ date: -1 })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    const totalPages = Math.ceil(totalPosts / perPage);
+
+    // Build posts HTML
+    const postsHtml = posts.length
+      ? posts.map(post => `
+        <div class="col-md-4 mb-4 post-item fade-in">
+          <div class="card h-100 shadow-sm">
+            ${post.image ? `<img src="${post.image}" class="card-img-top" alt="${post.title}">` : ""}
+            <div class="card-body">
+              ${post.category ? `<span class="badge bg-primary mb-2">${post.category}</span>` : ""}
+              <h5 class="card-title">${post.title}</h5>
+              <p class="card-text">
+                ${post.excerpt
+                  ? post.excerpt.substring(0, 100) + "..."
+                  : post.content
+                  ? post.content.substring(0, 100) + "..."
+                  : ""}
+              </p>
+              ${
+                    post.date
+                      ? `<p class="date"><small>${new Date(post.date).toLocaleDateString('en-US', {
+                          weekday: 'short',
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}</small></p>`
+                      : ""
+                  }
+              <a href="/blog/${post.slug}" class="btn btn-sm btn-outline-primary">Read More</a>
+            </div>
+          </div>
+        </div>
+      `).join("")
+      : "";
+
+    // Build pagination HTML with ellipsis
+    let paginationHtml = "";
+    if (totalPages > 1) {
+      let startPage = Math.max(1, page - 2);
+      let endPage = Math.min(totalPages, page + 2);
+
+      paginationHtml += `<ul class="pagination justify-content-center">`;
+
+      if (page > 1) {
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" data-page="${page - 1}">Previous</a></li>`;
+      }
+
+      if (startPage > 1) {
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`;
+        if (startPage > 2) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        paginationHtml += `<li class="page-item ${i === page ? "active" : ""}">
+          <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>`;
+      }
+
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) paginationHtml += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a></li>`;
+      }
+
+      if (page < totalPages) {
+        paginationHtml += `<li class="page-item"><a class="page-link" href="#" data-page="${page + 1}">Next</a></li>`;
+      }
+
+      paginationHtml += `</ul>`;
+    }
+
+    res.json({ postsHtml, paginationHtml });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server Error" });
