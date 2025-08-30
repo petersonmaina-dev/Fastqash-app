@@ -65,12 +65,12 @@ app.get('/sitemap.xml', async (req, res) => {
       { url: '/register', changefreq: 'weekly', priority: 0.9 },
       { url: '/faqs', changefreq: 'weekly', priority: 0.7 },
       { url: '/legitimacy', changefreq: 'monthly', priority: 0.7 },
-      { url: '/ghana', changefreq: 'daily', priority: 0.6 },
-      { url: '/kenya', changefreq: 'weekly', priority: 0.6 },
+      { url: '/ghana', changefreq: 'daily', priority: 0.8 },
+      { url: '/kenya', changefreq: 'weekly', priority: 0.8 },
       { url: '/gallery', changefreq: 'monthly', priority: 0.7 },
-      { url: '/zambia', changefreq: 'monthly', priority: 0.6 },
+      { url: '/zambia', changefreq: 'monthly', priority: 0.8 },
       { url: '/how-it-works', changefreq: 'monthly', priority: 0.6 },
-      { url: '/blog', changefreq: 'daily', priority: 0.9 },
+      { url: '/blog', changefreq: 'daily', priority: 1.0 },
     
     ];
 
@@ -79,7 +79,7 @@ app.get('/sitemap.xml', async (req, res) => {
       links.push({
         url: `/blog/${post.slug}`,
         changefreq: 'daily',
-        priority: 0.8,
+        priority: 0.9,
         lastmod: blog.updatedAt ? blog.updatedAt.toISOString() : undefined
       });
     });
