@@ -77,7 +77,7 @@ app.get('/sitemap.xml', async (req, res) => {
     // Add blogs dynamically
     blogs.forEach(blog => {
       links.push({
-        url: `/blog/${post.slug}`,
+        url: `/blog/${blog.slug}`,
         changefreq: 'daily',
         priority: 0.9,
         lastmod: blog.updatedAt ? blog.updatedAt.toISOString() : undefined
