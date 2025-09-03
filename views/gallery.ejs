@@ -22,7 +22,41 @@
     <meta name="twitter:image" content="https://fastqashagencies.com/images/favicon.PNG">
 
     
-
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Fastqash Agencies - Gallery",
+        "url": "https://fastqashagencies.com/gallery",
+        "description": "Explore the Fastqash Agencies Gallery showcasing community events, success stories, and blog highlights.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Fastqash Agencies",
+            "url": "https://fastqashagencies.com",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "https://fastqashagencies.com/images/og-image.png"
+            }
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+            <% posts.forEach((post, index) => { %>{
+                "@type": "ImageObject",
+                "position": <%= index + 1 %>,
+                "name": "<%= post.title %>",
+                "contentUrl": "https://fastqashagencies.com<%= post.image %>",
+                "thumbnailUrl": "https://fastqashagencies.com<%= post.image %>",
+                "description": "<%= post.title %>",
+                "url": "https://fastqashagencies.com/blog/<%= post.slug %>",
+                "datePublished": "<%= new Date(post.date).toISOString().split('T')[0] %>"
+            }<% if (index + 1 !== posts.length) { %>,<% } %>
+            <% }) %>
+            ]
+        }
+        }
+        </script>
 
 
 
@@ -136,6 +170,28 @@
         .gallery-img:hover img {
             transform: scale(1.05);
         }
+
+        .image-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6); /* dark semi-transparent background */
+            padding: 6px 10px;
+            text-align: center;
+        }
+
+        .image-title-overlay a {
+            font-size: 14px;   /* smaller font size */
+            font-weight: 500;
+            color: #fff;       /* white text for contrast */
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
 
         /* Lightbox */
         .lightbox {
@@ -258,12 +314,21 @@
             <div class="row mb-5">
                 <% posts.forEach(post => { %>
                     <div class="col-md-4 mb-4 fade-in">
-                        <div class="gallery-img">
+                        <div class="gallery-img position-relative">
                             <img src="<%= post.image %>" class="img-fluid" alt="<%= post.title %>">
+
+                            <!-- Title overlay -->
+                            <div class="image-title-overlay">
+                                <a href="/blog/<%= post.slug %>" class="text-decoration-none">
+                                    <%= post.title %>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 <% }) %>
             </div>
+
+
         </div>
     </div>
 

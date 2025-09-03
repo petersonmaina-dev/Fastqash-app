@@ -3,26 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= post.title %> - Fastqash Blog</title>
+  <title><%= post.title %> - Fastqash</title>
   <meta name="description" content="<%= post.excerpt %>">
-  <meta name="keywords" content="Fastqash, Blog, <%= post.category %>">
+  <meta name="keywords" content="Fastqash, Blog, <%= post.category %>, fastqashagencies, Fastqash Agencies, Helalink, Helalink Kenya, Helalink Agencies, Helalink agency">
   <meta name="author" content="Fastqash Agencies">
   <meta name="image" content="<%= post.image || 'https://fastqashagencies.com/images/fastqash.png' %>">
   
 
   <!--open meta graphs-->
-  <meta property="og:title" content="<%= post.title %> - Fastqash Blog">
+  <meta property="og:title" content="<%= post.title %> - Fastqash">
   <meta property="og:description" content="<%= post.excerpt %>">
   <meta property="og:image" content="<%= post.image || 'https://fastqashagencies.com/images/fastqash.png' %>">
   <meta property="og:url" content="https://fastqashagencies.com/blog/<%= post.slug %>">
   <meta property="og:type" content="article">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="<%= post.title %> - Fastqash Blog">
+  <meta name="twitter:title" content="<%= post.title %> - Fastqash ">
   <meta name="twitter:description" content="<%= post.excerpt %>">
   <meta name="twitter:image" content="<%= post.image || 'https://fastqashagencies.com/images/fastqash.png' %>">
   <!--close meta graphs-->
+   
 
+  <!--schema-->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://fastqashagencies.com/blog/<%= post.slug %>"
+    },
+    "headline": "<%= post.title %>",
+    "description": "<%= post.excerpt %>",
+    "image": "<%= post.image || 'https://fastqashagencies.com/images/fastqash.png' %>",  
+    "author": {
+      "@type": "Organization",
+      "name": "Fastqash Agencies",
+      "url": "https://fastqashagencies.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Fastqash Agencies",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://fastqashagencies.com/images/logo.png"
+      }
+    },
+    "datePublished": "<%= post.date.toISOString() %>",
+    "dateModified": "<%= post.updatedAt ? post.updatedAt.toISOString() : post.date.toISOString() %>"
+  }
+  </script>
 
 
   <!--favicon-->

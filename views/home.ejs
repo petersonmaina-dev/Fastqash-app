@@ -1,20 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fastqash Agencies - Online Earnings Platform</title>
-  <meta name="description" content="Join Fastqash Agencies - a leading online earning platform offering fast money making opportunities in Ghana, Kenya, Zambia and around the world. Start your journey to financial freedom today.">
-  <meta name="keywords" content="Fastqash, MLM, network marketing, business opportunity, Ghana, Kenya, Zambia, make money online">
-  <meta name="image" content="https://fasqash.net/images/og-image.png">
 
-  <!-- Open Graph Tags -->
-    <meta property="og:title" content="Fastqash Agencies - Online Earnings Platform">
-    <meta property="og:description" content="Join Fastqash Agencies - a leading digital platform offering earning opportunities in multiple countries.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fastqashagencies.com">
-    <meta property="og:image" content="https://fastqashagencies.com/images/og-image.png">
-    
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fastqash Agencies - Earn Money Online with Surveys, Writing, Affiliate Marketing and More.</title>
+
+<meta name="description" content="Make money online by completing surveys, writing blogs, affiliate marketing, watching videos, and more. Start earning today in Kenya, Ghana, Zambia and worldwide.">
+
+<meta name="keywords" content="Fastqash Agencies, Fastqash, Fastqash Agencies, Helalink, Helalink Agencies, Vumaqash,  earn money online, surveys, paid tasks, write articles for money, affiliate marketing, watch videos online, make money Kenya, make money Ghana, make money Zambia, digital earnings, work from home">
+
+<meta name="image" content="https://fastqashagencies.com/images/og-image.png">
+
+<!-- Open Graph Tags -->
+<meta property="og:title" content="Fastqash Agencies - Simple Ways to Earn Money Online">
+<meta property="og:description" content="Earn online with Fastqash Agencies by completing surveys, writing blogs, affiliate marketing, watching videos, and more. Available in Kenya, Ghana, Zambia, and beyond.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fastqashagencies.com">
+<meta property="og:image" content="https://fastqashagencies.com/images/og-image.png">
+
+
+<!--schema-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Fastqash Agencies",
+      "url": "https://fastqashagencies.com",
+      "logo": "https://fastqashagencies.com/images/og-image.png",
+      "description": "Fastqash Agencies is an online earning platform where members can make money by completing surveys, writing blogs, affiliate marketing, watching videos, and more.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Support",
+        "telephone": "+254742381320",
+        "email": "support@fastqashagencies.com"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "Fastqash Agencies",
+      "url": "https://fastqashagencies.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://fastqashagencies.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why choose Fastqash?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fastqash Agencies is licensed, operates on a proven business model, and has a strong community that provides training and support to help you succeed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I register on Fastqash?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Registration is simple. Visit the registration page, create an account, and start earning immediately by completing tasks like surveys, writing, and affiliate marketing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "In which countries does Fastqash operate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fastqash Agencies operates in Kenya, Ghana, Zambia, and serves members worldwide."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+
 
   <!--favicon-->
   <link rel="icon" href="/images/favicon.PNG" type="image/png">
@@ -377,17 +446,46 @@
                         ? post.excerpt.substring(0, 100) + '...' 
                         : (post.content ? post.content.substring(0, 100) + '...' : '') %>
                 <% if (post.date) { %>
-  <p class="date">
-    <small>
-      <%= new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) %>
-    </small>
-  </p>
-<% } %>
+                <p class="date">
+                  <small>
+                    <%= new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) %>
+                  </small>
+                </p>
+              <% } %>
 
                 <a href="/blog/<%= post.slug %>" class="btn btn-outline-primary">Read More</a>
               </div>
             </div>
           </div>
+
+          <!-- ✅ Structured Data for each post -->
+          <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "<%= post.title %>",
+            "description": "<%= post.excerpt ? post.excerpt : post.content.substring(0,150) %>",
+            "image": "<%= post.image ? post.image : 'https://fastqashagencies.com/images/og-image.png' %>",
+            "author": {
+              "@type": "Organization",
+              "name": "Fastqash Agencies",
+              "url": "https://fastqashagencies.com"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Fastqash Agencies",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://fastqashagencies.com/images/og-image.png"
+              }
+            },
+            "datePublished": "<%= post.date ? new Date(post.date).toISOString() : '' %>",
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": "https://fastqashagencies.com/blog/<%= post.slug %>"
+            }
+          }
+          </script>
         <% }) %>
       <% } else { %>
         <div class="col-12">
