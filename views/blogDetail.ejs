@@ -193,58 +193,104 @@
 
   <!-- Navbar -->
   <%- include('partials/navbar') %>
+      <%
+        // --------------------------
+        // Safe Date Conversion
+        // --------------------------
+        const toSafeDate = d => {
+          const date = d ? new Date(d) : null;
+          return date && !isNaN(date) ? date : new Date();
+        };
 
-  <!-- Hero -->
-<section class="blog-hero">
-  <div class="container text-center">
-    <% if (post.category) { %>
-      <span class="badge bg-primary mb-3"><%= post.category %></span>
-    <% } %>
-    <h1 class="fw-bold mb-3"><%= post.title %></h1>
-    <p class="lead text-light mb-0"><%= post.date.toDateString() %></p>
-  </div>
-</section>
+        const displayDate = toSafeDate(post.date);
+        const publishedDate = toSafeDate(post.date);
+        const modifiedDate = toSafeDate(post.updatedAt || post.date);
+      %>
 
-  <!-- Post Content -->
-  <section class="py-5">
-    <div class="container">
-      <% if (post.image) { %>
-        <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
-      <% } %>
-      <div class="post-content">
-        <%- contentHTML %>
-      </div>
-    </div>
-  </section>
+      <!-- Hero Section -->
+      <section class="blog-hero">
+        <div class="container text-center">
+          <% if (post.category) { %>
+            <span class="badge bg-primary mb-3"><%= post.category %></span>
+          <% } %>
+          <h1 class="fw-bold mb-3"><%= post.title %></h1>
+          <p class="lead text-light mb-0">
+            <%= displayDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </p>
+        </div>
+      </section>
 
-  <!-- Related Posts -->
-  <section class="py-5 related-posts">
-    <div class="container">
-      <h2 class="section-title">Related Posts</h2>
-      <div class="row">
-        <% if (relatedPosts && relatedPosts.length > 0) { %>
-          <% relatedPosts.forEach(rp => { %>
-            <div class="col-md-4 mb-4">
-              <div class="card h-100">
-                <% if (rp.image) { %>
-                  <img src="<%= rp.image %>" class="card-img-top" alt="<%= rp.title %>">
-                <% } %>
-                <div class="card-body">
-                  <h5 class="card-title"><%= rp.title %></h5>
-                  <a href="/blog/<%= rp.slug %>" class="btn btn-sm btn-outline-primary">Read More</a>
-                </div>
-              </div>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <div class="col-12 text-center py-5">
-            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-            <h3>No related posts found</h3>
+      <!-- Post Content -->
+      <section class="py-5">
+        <div class="container">
+          <% if (post.image) { %>
+            <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
+          <% } %>
+          <div class="post-content">
+            <%- contentHTML %>
           </div>
-        <% } %>
-      </div>
-    </div>
-  </section>
+        </div>
+      </section>
+
+      <!-- Related Posts -->
+      <section class="py-5 related-posts">
+        <div class="container">
+          <h2 class="section-title">Related Posts</h2>
+          <div class="row">
+            <% if (relatedPosts && relatedPosts.length > 0) { %>
+              <% relatedPosts.forEach(rp => { %>
+                <div class="col-md-4 mb-4">
+                  <div class="card h-100">
+                    <% if (rp.image) { %>
+                      <img src="<%= rp.image %>" class="card-img-top" alt="<%= rp.title %>">
+                    <% } %>
+                    <div class="card-body">
+                      <% if (rp.category) { %>
+                        <span class="badge bg-primary mb-2"><%= rp.category %></span>
+                      <% } %>
+                      <h5 class="card-title"><%= rp.title %></h5>
+                      <% if (rp.date) { %>
+                        <p class="date">
+                          <small>
+                            <%= toSafeDate(rp.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) %>
+                          </small>
+                        </p>
+                      <% } %>
+                      <a href="/blog/<%= rp.slug %>" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="col-12 text-center py-5">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h3>No related posts found</h3>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </section>
+
+      <!-- Structured Data JSON-LD -->
+      <!-- Structured Data JSON-LD -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "<%= post.title %>",
+        "image": "<%= post.image || '' %>",
+        "author": {
+          "@type": "Person",
+          "name": "<%= post.author || 'Admin' %>"
+        },
+        "datePublished": "<%= publishedDate.toISOString() %>",
+        "dateModified": "<%= modifiedDate.toISOString() %>"
+      }
+      </script>
+
+
+
+
 
   <!-- Footer -->
   <%- include('partials/footer') %>

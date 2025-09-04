@@ -3,9 +3,10 @@ const router = express.Router();
 const Admin = require("../models/Admin");
 const Blog = require("../models/blog");
 const ensureAuth = require("../middleware/auth");
-const  cloudinary = require("../config/cloudinary");
+const cloudinary = require("../config/cloudinary");
+const { Op } = require("sequelize");
 
-// Middleware to set admin layout
+// ---------- Middleware ----------
 router.use((req, res, next) => {
   res.locals.layout = "layouts/admin";
   next();
@@ -22,15 +23,23 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const admin = await Admin.findOne({ username });
-    if (admin && await admin.comparePassword(password)) {
-      req.session.adminId = admin._id;
+    const admin = await Admin.findOne({ where: { username } });
+    if (admin && (await admin.comparePassword(password))) {
+      req.session.adminId = admin.id;
       return res.redirect("/admin");
     }
-    res.render("admin/login", { error: "Invalid credentials", layout: false, title: "Admin Login" });
+    res.render("admin/login", {
+      error: "Invalid credentials",
+      layout: false,
+      title: "Admin Login",
+    });
   } catch (err) {
-    console.error(err);
-    res.render("admin/login", { error: "Something went wrong", layout: false, title: "Admin Login" });
+    console.error("Login error:", err);
+    res.render("admin/login", {
+      error: "Something went wrong",
+      layout: false,
+      title: "Admin Login",
+    });
   }
 });
 
@@ -40,23 +49,29 @@ router.get("/logout", (req, res) => {
 });
 
 // ---------- Dashboard ----------
-
 router.get("/", ensureAuth, async (req, res) => {
   try {
-    const totalPosts = await Blog.countDocuments();
-    const totalCategories = (await Blog.distinct("category")).length;
-    const totalImages = await Blog.countDocuments({ image: { $exists: true, $ne: "" } });
-    const recentPosts = await Blog.find().sort({ date: -1 }).limit(3);
+    const totalPosts = await Blog.count();
+    const totalCategories = (
+      await Blog.aggregate("category", "DISTINCT", { plain: false })
+    ).length;
+    const totalImages = await Blog.count({
+      where: { image: { [Op.ne]: "" } },
+    });
+    const recentPosts = await Blog.findAll({
+      order: [["date", "DESC"]],
+      limit: 3,
+    });
 
     res.render("admin/dashboard", {
       stats: { totalPosts, totalCategories, totalImages },
       recentPosts,
       title: "Dashboard",
       active: "dashboard",
-      layout: "layouts/admin"
+      layout: "layouts/admin",
     });
   } catch (err) {
-    console.error(err);
+    console.error("Dashboard error:", err);
     res.status(500).send("Error loading dashboard");
   }
 });
@@ -66,38 +81,41 @@ router.get("/", ensureAuth, async (req, res) => {
 // All Posts (with optional search)
 router.get("/posts", ensureAuth, async (req, res) => {
   try {
-    const searchQuery = req.query.search ? req.query.search.trim() : '';
-    let query = {};
+    const searchQuery = req.query.search?.trim() || "";
+    let where = {};
 
     if (searchQuery) {
-      query = {
-        $or: [
-          { title: { $regex: searchQuery, $options: "i" } },
-          { category: { $regex: searchQuery, $options: "i" } },
-          { excerpt: { $regex: searchQuery, $options: "i" } }
-        ]
+      where = {
+        [Op.or]: [
+          { title: { [Op.like]: `%${searchQuery}%` } },
+          { category: { [Op.like]: `%${searchQuery}%` } },
+          { excerpt: { [Op.like]: `%${searchQuery}%` } },
+        ],
       };
     }
 
-    const posts = await Blog.find(query).sort({ date: -1 });
+    const posts = await Blog.findAll({ where, order: [["date", "DESC"]] });
 
     res.render("admin/posts", {
       posts,
       title: "All Posts",
       active: "posts",
       layout: "layouts/admin",
-      search: searchQuery
+      search: searchQuery,
     });
   } catch (err) {
-    console.error(err);
+    console.error("Fetch posts error:", err);
     res.status(500).send("Error fetching posts");
   }
 });
 
-
 // New Post Form
 router.get("/posts/new", ensureAuth, (req, res) => {
-  res.render("admin/new-post", { title: "Create New Post", active: "posts", layout: "layouts/admin" });
+  res.render("admin/new-post", {
+    title: "Create New Post",
+    active: "posts",
+    layout: "layouts/admin",
+  });
 });
 
 // Save New Post (Cloudinary Base64)
@@ -110,26 +128,25 @@ router.post("/posts", ensureAuth, async (req, res) => {
 
     if (imageBase64) {
       const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
-        folder: "fastqash"
+        folder: "fastqash",
       });
       imageUrl = uploadResponse.secure_url;
       imageId = uploadResponse.public_id;
     }
 
-    const newPost = new Blog({
+    await Blog.create({
       title,
       excerpt,
       content,
       category,
       image: imageUrl,
       imageId,
-      slug: title.toLowerCase().replace(/\s+/g, "-")
+      slug: title.toLowerCase().replace(/\s+/g, "-"),
     });
 
-    await newPost.save();
     res.redirect("/admin/posts");
   } catch (err) {
-    console.error("Error creating post:", err);
+    console.error("Create post error:", err);
     res.status(500).send("Error creating post");
   }
 });
@@ -137,12 +154,17 @@ router.post("/posts", ensureAuth, async (req, res) => {
 // Edit Post Form
 router.get("/posts/edit/:id", ensureAuth, async (req, res) => {
   try {
-    const post = await Blog.findById(req.params.id);
+    const post = await Blog.findByPk(req.params.id);
     if (!post) return res.status(404).send("Post not found");
 
-    res.render("admin/edit-post", { post, title: "Edit Post", active: "posts", layout: "layouts/admin" });
+    res.render("admin/edit-post", {
+      post,
+      title: "Edit Post",
+      active: "posts",
+      layout: "layouts/admin",
+    });
   } catch (err) {
-    console.error(err);
+    console.error("Fetch post for edit error:", err);
     res.status(500).send("Error fetching post");
   }
 });
@@ -151,15 +173,16 @@ router.get("/posts/edit/:id", ensureAuth, async (req, res) => {
 router.post("/posts/edit/:id", ensureAuth, async (req, res) => {
   try {
     const { title, excerpt, content, category, imageBase64 } = req.body;
-    const post = await Blog.findById(req.params.id);
+    const post = await Blog.findByPk(req.params.id);
     if (!post) return res.status(404).send("Post not found");
 
-    // Upload new image if provided
     if (imageBase64) {
       if (post.imageId) {
-        await cloudinary.uploader.destroy(post.imageId); // remove old image
+        await cloudinary.uploader.destroy(post.imageId);
       }
-      const uploadResponse = await cloudinary.uploader.upload(imageBase64, { folder: "fastqash" });
+      const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
+        folder: "fastqash",
+      });
       post.image = uploadResponse.secure_url;
       post.imageId = uploadResponse.public_id;
     }
@@ -173,7 +196,7 @@ router.post("/posts/edit/:id", ensureAuth, async (req, res) => {
     await post.save();
     res.redirect("/admin/posts");
   } catch (err) {
-    console.error("Error updating post:", err);
+    console.error("Update post error:", err);
     res.status(500).send("Error updating post");
   }
 });
@@ -181,12 +204,17 @@ router.post("/posts/edit/:id", ensureAuth, async (req, res) => {
 // Delete Post
 router.post("/posts/delete/:id", ensureAuth, async (req, res) => {
   try {
-    const post = await Blog.findById(req.params.id);
-    if (post && post.imageId) await cloudinary.uploader.destroy(post.imageId);
-    await Blog.findByIdAndDelete(req.params.id);
+    const post = await Blog.findByPk(req.params.id);
+    if (!post) return res.status(404).send("Post not found");
+
+    if (post.imageId) {
+      await cloudinary.uploader.destroy(post.imageId);
+    }
+
+    await post.destroy();
     res.redirect("/admin/posts");
   } catch (err) {
-    console.error(err);
+    console.error("Delete post error:", err);
     res.status(500).send("Error deleting post");
   }
 });

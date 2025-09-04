@@ -17,37 +17,63 @@
 
     /* Sidebar */
     .sidebar {
-      min-width: 220px;
-      max-width: 220px;
-      background-color: #343a40;
+      width: 240px;
+      background-color: #212529;
       color: #fff;
       flex-shrink: 0;
-      transition: all 0.3s;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      padding: 20px 0;
+      overflow-y: auto;
+      transition: left 0.3s ease;
     }
 
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .sidebar a:hover {
-      background-color: #495057;
-      border-radius: 6px;
+    .sidebar h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #f8f9fa;
     }
 
     .sidebar .nav-link {
+      color: #adb5bd;
       padding: 12px 20px;
+      border-left: 4px solid transparent;
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
     }
 
-    .sidebar .active {
-      background-color: #495057;
-      border-radius: 6px;
+    .sidebar .nav-link:hover {
+      background-color: #343a40;
+      color: #fff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .sidebar .nav-link.active {
+      background-color: #343a40;
+      color: #fff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .sidebar .nav-link.text-danger:hover {
+      background-color: #dc3545;
+      color: #fff;
+      border-left: 4px solid #dc3545;
     }
 
     /* Main content */
     .main-content {
       flex-grow: 1;
       padding: 30px;
+      margin-left: 240px;
+      transition: margin-left 0.3s ease;
+      width: 100%;
     }
 
     /* Topbar */
@@ -69,19 +95,18 @@
       cursor: pointer;
     }
 
+    /* Mobile */
     @media (max-width: 768px) {
       .sidebar {
-        position: absolute;
-        left: -220px;
-        top: 0;
-        height: 100%;
+        left: -240px;
         z-index: 1000;
       }
-
       .sidebar.show {
         left: 0;
       }
-
+      .main-content {
+        margin-left: 0;
+      }
       .topbar .toggle-btn {
         display: block;
       }
@@ -90,26 +115,33 @@
 </head>
 <body>
   <!-- Sidebar -->
-  <div class="sidebar d-flex flex-column p-3" id="sidebar">
-    <h4 class="text-center mb-4">Fastqash Admin</h4>
+  <div class="sidebar" id="sidebar">
+    <h4>Fastqash Admin</h4>
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a href="/admin" class="nav-link <%= active === 'dashboard' ? 'active' : '' %>">Dashboard</a>
+        <a href="/admin" class="nav-link <%= active === 'dashboard' ? 'active' : '' %>">
+          📊 Dashboard
+        </a>
       </li>
       <li class="nav-item">
-        <a href="/admin/posts" class="nav-link <%= active === 'posts' ? 'active' : '' %>">All Posts</a>
+        <a href="/admin/posts" class="nav-link <%= active === 'posts' ? 'active' : '' %>">
+          📝 All Posts
+        </a>
       </li>
       <% if(active === 'edit-post' && post) { %>
       <li class="nav-item">
-        <a href="/admin/posts/edit/<%= post._id %>" class="nav-link <%= active === 'edit-post' ? 'active' : '' %>">Edit Post</a>
+        <a href="/admin/posts/edit/<%= post._id %>" class="nav-link <%= active === 'edit-post' ? 'active' : '' %>">
+          ✏️ Edit Post
+        </a>
       </li>
       <% } %>
       <li class="nav-item">
-        <a href="/admin/posts/new" class="nav-link <%= active === 'new-post' ? 'active' : '' %>">New Post</a>
+        <a href="/admin/posts/new" class="nav-link <%= active === 'new-post' ? 'active' : '' %>">
+          ➕ New Post
+        </a>
       </li>
-     
       <li class="nav-item mt-3">
-        <a href="/admin/logout" class="nav-link text-danger">Logout</a>
+        <a href="/admin/logout" class="nav-link text-danger">🚪 Logout</a>
       </li>
     </ul>
   </div>

@@ -1,25 +1,49 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db");
+const slugify = require("slugify");
 
-const BlogSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  excerpt: { type: String },
-  content: { type: String },
-  image: { type: String },
-  category: { type: String, default: 'General' },
-  slug: { type: String, unique: true },
-  image: String,      // Cloudinary URL
-  imageId: String,    // Cloudinary public_id (for deletion)
-  date: { type: Date, default: Date.now }
+const Blog = sequelize.define("Blog", {
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  excerpt: {
+    type: DataTypes.STRING,
+  },
+  content: {
+    type: DataTypes.TEXT,
+  },
+  category: {
+    type: DataTypes.STRING,
+    defaultValue: "General",
+  },
+  slug: {
+    type: DataTypes.STRING,
+    unique: true,
+  },
+  image: {
+    type: DataTypes.STRING, // Cloudinary URL
+  },
+  imageId: {
+    type: DataTypes.STRING, // Cloudinary public_id
+  },
+  date: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
 });
 
-// Auto-generate slug before save
-BlogSchema.pre('save', function (next) {
-  if (this.isModified('title')) {
-    this.slug = slugify(this.title, { lower: true, strict: true });
+// Hook to auto-generate slug
+Blog.beforeCreate((blog) => {
+  if (blog.title) {
+    blog.slug = slugify(blog.title, { lower: true, strict: true });
   }
-  next();
 });
 
-// Check if the model already exists before defining it
-module.exports = mongoose.models.Blog || mongoose.model('Blog', BlogSchema);
+Blog.beforeUpdate((blog) => {
+  if (blog.changed("title")) {
+    blog.slug = slugify(blog.title, { lower: true, strict: true });
+  }
+});
+
+module.exports = Blog;

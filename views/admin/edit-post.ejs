@@ -21,7 +21,11 @@
   <div class="container py-5">
     <div class="card p-4">
       <h1>Edit Post</h1>
-      <form action="/admin/posts/edit/<%= post._id %>" method="POST">
+
+      <!-- ✅ Fixed form action -->
+      <form action="/admin/posts/edit/<%= post.id %>" method="POST">
+
+        <!-- hidden input for base64 image -->
         <input type="hidden" name="imageBase64" id="imageBase64">
 
         <div class="mb-3">
@@ -51,12 +55,12 @@
           <% } else { %>
             <p class="text-muted">No image uploaded</p>
           <% } %>
-          <img id="imagePreview" src="#" alt="New Image Preview" class="img-fluid">
         </div>
 
         <div class="mb-3">
           <label class="form-label">Replace Image (optional)</label>
           <input type="file" accept="image/*" id="imageInput" class="form-control">
+          <img id="imagePreview" src="#" alt="New Image Preview" class="img-fluid mt-2">
         </div>
 
         <button type="submit" class="btn btn-warning btn-custom">Update Post</button>
@@ -76,7 +80,7 @@
         reader.onload = e => {
           imagePreview.src = e.target.result;
           imagePreview.style.display = 'block';
-          imageBase64Input.value = e.target.result; // store Base64 string
+          imageBase64Input.value = e.target.result; // ✅ send base64 to backend
         };
         reader.readAsDataURL(file);
       } else {

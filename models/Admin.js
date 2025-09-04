@@ -1,21 +1,42 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const { DataTypes, Model } = require("sequelize");
+const bcrypt = require("bcryptjs");   // switched from bcrypt to bcryptjs
+const sequelize = require("../config/db");
 
-const adminSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-});
+// Extend Sequelize's Model class
+class Admin extends Model {
+  async comparePassword(password) {
+    return bcrypt.compare(password, this.password); // bcryptjs has same API
+  }
+}
 
-// Hash password before saving
-adminSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
+Admin.init(
+  {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize, // Pass sequelize instance
+    modelName: "Admin",
+    tableName: "admins", // optional, but recommended
+    timestamps: true, // adds createdAt & updatedAt
+    hooks: {
+      beforeCreate: async (admin) => {
+        admin.password = await bcrypt.hash(admin.password, 10); // same API
+      },
+      beforeUpdate: async (admin) => {
+        if (admin.changed("password")) {
+          admin.password = await bcrypt.hash(admin.password, 10);
+        }
+      },
+    },
+  }
+);
 
-// Compare password
-adminSchema.methods.comparePassword = function(password) {
-  return bcrypt.compare(password, this.password);
-};
-
-module.exports = mongoose.model('Admin', adminSchema);
+module.exports = Admin;
